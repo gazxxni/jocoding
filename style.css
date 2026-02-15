@@ -173,6 +173,11 @@ body.dark-mode .result-item .label {
   font-weight: 600;
 }
 
+.ad-unit {
+  margin: 1.5rem auto;
+  text-align: center;
+  max-width: 300px; /* Example max-width for ad unit */
+}
 
 .card-footer {
   width: 100%;
