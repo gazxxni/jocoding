@@ -12,11 +12,12 @@
   <div class="container">
     <header>
       <h1>나는 강아지상? 고양이상?</h1>
-      <p>인공지능이 당신의 동물상을 알려드립니다!</p>
+      <p>사진을 업로드하여 당신의 동물상을 확인해보세요!</p>
     </header>
     <main>
-      <button type="button" id="start-btn" onclick="init()">시작하기</button>
-      <div id="webcam-container"></div>
+      <button type="button" id="upload-btn">사진 선택</button>
+      <input type="file" id="file-input" accept="image/*" style="display: none;" />
+      <div id="image-container"></div>
       <div id="label-container"></div>
     </main>
     <footer>

@@ -80,7 +80,7 @@ body.dark-mode header p {
   color: #adb5bd;
 }
 
-#start-btn, #theme-toggle {
+#upload-btn, #theme-toggle {
   cursor: pointer;
   border: none;
   padding: 12px 25px;
@@ -90,13 +90,13 @@ body.dark-mode header p {
   transition: background-color 0.3s, transform 0.2s;
 }
 
-#start-btn {
+#upload-btn {
   background-color: var(--button-bg-light);
   color: var(--button-text-light);
   margin-bottom: 1rem;
 }
 
-body.dark-mode #start-btn {
+body.dark-mode #upload-btn {
     background-color: var(--button-bg-dark);
 }
 
@@ -104,13 +104,26 @@ button:active {
     transform: scale(0.97);
 }
 
-#webcam-container {
+#image-container {
   margin: 20px auto;
   border-radius: 15px;
   overflow: hidden;
   width: 300px;
   height: 300px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: var(--bar-bg-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+body.dark-mode #image-container {
+    background-color: var(--bar-bg-dark);
 }
 
 #label-container {
@@ -118,6 +131,7 @@ button:active {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  min-height: 80px; /* Prevent layout shift */
 }
 
 .result-bar-container {
@@ -152,8 +166,9 @@ body.dark-mode .result-bar {
 }
 
 /* Specific colors for dog and cat bars */
-[data-label="강아지"] .bar { background-color: var(--bar-fill-dog); }
-[data-label="고양이"] .bar { background-color: var(--bar-fill-cat); }
+.result-label[data-label="강아지"] ~ .result-bar .bar { background-color: var(--bar-fill-dog); }
+.result-label[data-label="고양이"] ~ .result-bar .bar { background-color: var(--bar-fill-cat); }
+
 
 .result-percent {
   text-align: left;
