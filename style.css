@@ -140,3 +140,13 @@ body.dark-mode #theme-toggle {
     font-weight: bold;
     color: green; /* Default for success */
 }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--input-border-light);
+  margin: 2rem 0;
+}
+
+body.dark-mode hr {
+  border-top-color: var(--input-border-dark);
+}
