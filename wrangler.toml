@@ -1,5 +1,0 @@
-name = "jocoding-week1"
-compatibility_date = "2024-02-15"
-
-[site]
-bucket = "."
