@@ -23,13 +23,6 @@ async function init() {
     // load the model and metadata
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
-
-    // label-container 초기화
-    for (let i = 0; i < maxPredictions; i++) {
-        const div = document.createElement("div");
-        div.classList.add('result-bar-container');
-        labelContainer.appendChild(div);
-    }
 }
 
 // '사진 선택' 버튼 클릭 시 숨겨진 file input 클릭
@@ -42,6 +35,7 @@ fileInput.addEventListener('change', async (event) => {
 
     // 이전 이미지 및 결과 삭제
     imageContainer.innerHTML = '';
+    labelContainer.innerHTML = ''; // 이전 결과 삭제
     
     // 이미지 미리보기 생성
     const img = document.createElement('img');
@@ -64,14 +58,21 @@ async function predict(imageElement) {
         const classPrediction = prediction[i].className;
         const probability = prediction[i].probability;
 
-        const container = labelContainer.childNodes[i];
-        container.innerHTML = `
-            <div class="result-label" data-label="${classPrediction}">${classPrediction}</div>
-            <div class="result-bar">
-                <div class="bar" style="width: ${probability * 100}%"></div>
-            </div>
-            <div class="result-percent">${(probability * 100).toFixed(0)}%</div>
-        `;
+        const resultItem = document.createElement('div');
+        resultItem.classList.add('result-item');
+
+        const label = document.createElement('span');
+        label.classList.add('label');
+        label.textContent = classPrediction;
+
+        const percent = document.createElement('span');
+        percent.classList.add('percent');
+        percent.textContent = `${(probability * 100).toFixed(0)}%`;
+
+        resultItem.appendChild(label);
+        resultItem.appendChild(percent);
+        
+        labelContainer.appendChild(resultItem);
     }
 }
 

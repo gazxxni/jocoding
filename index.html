@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>동물상 테스트</title>
+  <title>AI 동물상 테스트</title>
   <link href='/style.css' rel='stylesheet'>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>나는 강아지상? 고양이상?</h1>
-      <p>사진을 업로드하여 당신의 동물상을 확인해보세요!</p>
-    </header>
-    <main>
-      <button type="button" id="upload-btn">사진 선택</button>
-      <input type="file" id="file-input" accept="image/*" style="display: none;" />
+  <div class="card">
+    <div class="card-header">
+      <h1>AI 동물상 테스트</h1>
+      <p>당신의 얼굴은 강아지상일까, 고양이상일까?</p>
+    </div>
+    <div class="card-content">
       <div id="image-container"></div>
       <div id="label-container"></div>
-    </main>
-    <footer>
-      <button id="theme-toggle">다크 모드</button>
-    </footer>
+      <button type="button" id="upload-btn" class="button button-primary">사진으로 분석하기</button>
+      <input type="file" id="file-input" accept="image/*" style="display: none;" />
+    </div>
+    <div class="card-footer">
+      <button id="theme-toggle" class="button button-ghost">다크 모드</button>
+    </div>
   </div>
   <script defer type="text/javascript" src="/main.js"></script>
 </body>

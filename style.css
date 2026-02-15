@@ -1,119 +1,107 @@
 :root {
-  /* Light Mode */
-  --bg-color-light: #fafafa;
-  --text-color-light: #212529;
-  --container-bg-light: #fff;
-  --button-bg-light: #0d6efd;
-  --button-text-light: #fff;
-  --bar-bg-light: #e9ecef;
-  --bar-fill-dog: #ffc107;
-  --bar-fill-cat: #fd7e14;
-  --shadow-light: 0 6px 12px rgba(0, 0, 0, 0.1);
+  /* Light Mode - Inspired by shadcn/ui Zinc */
+  --background-light: #ffffff;
+  --foreground-light: #09090b;
+  --card-light: #ffffff;
+  --card-foreground-light: #09090b;
+  --muted-light: #f4f4f5;
+  --muted-foreground-light: #71717a;
+  --primary-light: #09090b;
+  --primary-foreground-light: #fafafa;
+  --border-light: #e4e4e7;
 
-  /* Dark Mode */
-  --bg-color-dark: #121212;
-  --text-color-dark: #f8f9fa;
-  --container-bg-dark: #212529;
-  --button-bg-dark: #0a58ca;
-  --button-text-dark: #f8f9fa;
-  --bar-bg-dark: #343a40;
+  /* Dark Mode - Inspired by shadcn/ui Zinc */
+  --background-dark: #09090b;
+  --foreground-dark: #fafafa;
+  --card-dark: #09090b;
+  --card-foreground-dark: #fafafa;
+  --muted-dark: #27272a;
+  --muted-foreground-dark: #a1a1aa;
+  --primary-dark: #fafafa;
+  --primary-foreground-dark: #09090b;
+  --border-dark: #27272a;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--background-light);
+  color: var(--foreground-light);
   transition: background-color 0.3s, color 0.3s;
   margin: 0;
   padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: var(--bg-color-light);
-  color: var(--text-color-light);
 }
 
 body.dark-mode {
-  background-color: var(--bg-color-dark);
-  color: var(--text-color-dark);
+  background-color: var(--background-dark);
+  color: var(--foreground-dark);
 }
 
-.container {
-  background-color: var(--container-bg-light);
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: var(--shadow-light);
-  text-align: center;
+.card {
+  background-color: var(--card-light);
+  color: var(--card-foreground-light);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 2rem;
   width: 90%;
-  max-width: 450px;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-body.dark-mode .container {
-    background-color: var(--container-bg-dark);
-    box-shadow: none;
-    border: 1px solid var(--bar-bg-dark);
+body.dark-mode .card {
+  background-color: var(--card-dark);
+  color: var(--card-foreground-dark);
+  border: 1px solid var(--border-dark);
 }
 
-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--button-bg-light);
-  margin-bottom: 0.5rem;
+.card-header {
+  margin-bottom: 1.5rem;
 }
 
-body.dark-mode header h1 {
-  color: var(--bar-fill-dog);
+.card-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
 }
 
-header p {
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-  color: #6c757d;
+.card-header p {
+  font-size: 1rem;
+  color: var(--muted-foreground-light);
+  margin: 0;
 }
 
-body.dark-mode header p {
-  color: #adb5bd;
+body.dark-mode .card-header p {
+  color: var(--muted-foreground-dark);
 }
 
-#upload-btn, #theme-toggle {
-  cursor: pointer;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-#upload-btn {
-  background-color: var(--button-bg-light);
-  color: var(--button-text-light);
-  margin-bottom: 1rem;
-}
-
-body.dark-mode #upload-btn {
-    background-color: var(--button-bg-dark);
-}
-
-button:active {
-    transform: scale(0.97);
+.card-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 #image-container {
-  margin: 20px auto;
-  border-radius: 15px;
-  overflow: hidden;
-  width: 300px;
-  height: 300px;
-  background-color: var(--bar-bg-light);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  border: 2px dashed var(--border-light);
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--muted-light);
+  overflow: hidden;
+}
+
+body.dark-mode #image-container {
+  border-color: var(--border-dark);
+  background-color: var(--muted-dark);
 }
 
 #image-container img {
@@ -122,70 +110,91 @@ button:active {
   object-fit: cover;
 }
 
-body.dark-mode #image-container {
-    background-color: var(--bar-bg-dark);
+.button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  border: none;
+  width: 100%;
 }
+
+.button-primary {
+  background-color: var(--primary-light);
+  color: var(--primary-foreground-light);
+}
+.button-primary:hover {
+  background-color: #333;
+}
+
+body.dark-mode .button-primary {
+  background-color: var(--primary-dark);
+  color: var(--primary-foreground-dark);
+}
+body.dark-mode .button-primary:hover {
+  background-color: #ccc;
+}
+
 
 #label-container {
-  margin-top: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  min-height: 80px; /* Prevent layout shift */
+  gap: 0.75rem;
+  min-height: 50px;
 }
 
-.result-bar-container {
-  display: grid;
-  grid-template-columns: 80px 1fr 50px;
+.result-item {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  color: var(--muted-foreground-light);
 }
 
-.result-label {
-  text-align: right;
-  font-weight: bold;
+body.dark-mode .result-item {
+  color: var(--muted-foreground-dark);
 }
 
-.result-bar {
+.result-item .label {
+  font-weight: 500;
+  color: var(--foreground-light);
+}
+body.dark-mode .result-item .label {
+  color: var(--foreground-dark);
+}
+
+.result-item .percent {
+  font-weight: 600;
+}
+
+
+.card-footer {
   width: 100%;
-  height: 20px;
-  background-color: var(--bar-bg-light);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-body.dark-mode .result-bar {
-  background-color: var(--bar-bg-dark);
-}
-
-.result-bar .bar {
-  height: 100%;
-  border-radius: 10px;
-  transition: width 0.2s ease-in-out;
-}
-
-/* Specific colors for dog and cat bars */
-.result-label[data-label="강아지"] ~ .result-bar .bar { background-color: var(--bar-fill-dog); }
-.result-label[data-label="고양이"] ~ .result-bar .bar { background-color: var(--bar-fill-cat); }
-
-
-.result-percent {
-  text-align: left;
-  font-weight: bold;
-}
-
-footer {
   margin-top: 2rem;
+  text-align: center;
 }
 
-#theme-toggle {
-    background: none;
-    color: var(--text-color-light);
-    border: 1px solid #dee2e6;
+.button-ghost {
+  background: none;
+  border: 1px solid var(--border-light);
+  color: var(--muted-foreground-light);
+  font-weight: 500;
+  width: auto;
+}
+body.dark-mode .button-ghost {
+  border-color: var(--border-dark);
+  color: var(--muted-foreground-dark);
 }
 
-body.dark-mode #theme-toggle {
-    color: var(--text-color-dark);
-    border-color: var(--bar-bg-dark);
+.button-ghost:hover {
+  background-color: var(--muted-light);
+}
+body.dark-mode .button-ghost:hover {
+  background-color: var(--muted-dark);
 }
