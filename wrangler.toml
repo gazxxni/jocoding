@@ -1,9 +1,5 @@
-# name is required for pages deployments
 name = "jocoding-week1"
+compatibility_date = "2024-02-15"
 
-# Tells Wrangler that this is a Pages project
-pages_build_output_dir = "."
-
-# Optionally, you can also specify the build command if you have one.
-# For a simple static site, you might not need a build command, or it could be empty.
-# command = "npm run build"
+[site]
+bucket = "."
