@@ -1,60 +1,72 @@
 const themeToggleBtn = document.getElementById('theme-toggle');
-const form = document.querySelector('form');
-const formStatus = document.getElementById('form-status');
 
 // 테마 전환 버튼 클릭 이벤트
 themeToggleBtn.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
-
   const isDarkMode = document.body.classList.contains('dark-mode');
   themeToggleBtn.textContent = isDarkMode ? '라이트 모드' : '다크 모드';
 });
 
-// 폼 제출 이벤트 (Formspree 사용)
-form.addEventListener('submit', async (event) => {
-  event.preventDefault(); // 기본 폼 제출 방지
+// Teachable Machine
+const URL = "https://teachablemachine.withgoogle.com/models/FbPUvPxyt/";
 
-  const formData = new FormData(form);
-  const response = await fetch(form.action, {
-    method: form.method,
-    body: formData,
-    headers: {
-        'Accept': 'application/json'
+let model, webcam, labelContainer, maxPredictions;
+
+// Load the image model and setup the webcam
+async function init() {
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
+    
+    document.getElementById('start-btn').style.display = 'none';
+
+    // load the model and metadata
+    model = await tmImage.load(modelURL, metadataURL);
+    maxPredictions = model.getTotalClasses();
+
+    // Convenience function to setup a webcam
+    const flip = true; // whether to flip the webcam
+    webcam = new tmImage.Webcam(300, 300, flip); // width, height, flip
+    await webcam.setup(); // request access to the webcam
+    await webcam.play();
+    window.requestAnimationFrame(loop);
+
+    // append elements to the DOM
+    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < maxPredictions; i++) { // and class labels
+        const div = document.createElement("div");
+        div.classList.add('result-bar-container');
+        labelContainer.appendChild(div);
     }
-  });
+}
 
-  if (response.ok) {
-    formStatus.textContent = '문의가 성공적으로 접수되었습니다!';
-    formStatus.style.color = 'green';
-    form.reset(); // 폼 필드 초기화
-  } else {
-    const data = await response.json();
-    if (data.errors) {
-      formStatus.textContent = data.errors.map(error => error.message).join(', ');
-    } else {
-      formStatus.textContent = '문의 접수 중 오류가 발생했습니다.';
+async function loop() {
+    webcam.update(); // update the webcam frame
+    await predict();
+    window.requestAnimationFrame(loop);
+}
+
+// run the webcam image through the image model
+async function predict() {
+    // predict can take in an image, video or canvas html element
+    const prediction = await model.predict(webcam.canvas);
+    for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction = prediction[i].className;
+        const probability = prediction[i].probability;
+
+        const container = labelContainer.childNodes[i];
+        container.innerHTML = `
+            <div class="result-label">${classPrediction}</div>
+            <div class="result-bar">
+                <div class="bar" style="width: ${probability * 100}%"></div>
+            </div>
+            <div class="result-percent">${(probability * 100).toFixed(0)}%</div>
+        `;
     }
-    formStatus.style.color = 'red';
-  }
-});
+}
 
-// 초기 로드 시 다크 모드 상태 확인 및 Disqus 로드
+// 초기 로드 시 다크 모드 상태 확인
 window.addEventListener('load', () => {
     const isDarkMode = document.body.classList.contains('dark-mode');
     themeToggleBtn.textContent = isDarkMode ? '라이트 모드' : '다크 모드';
-    
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-    var disqus_config = function () {
-      this.page.url = window.location.href;  // Replace PAGE_URL with your page's canonical URL variable
-      this.page.identifier = 'jocoding-week1-main'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://productbuilder-17jidjilgx.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
 });
