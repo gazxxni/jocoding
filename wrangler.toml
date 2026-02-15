@@ -1,7 +1,9 @@
-name = "jocoding"
-compatibility_date = "2024-02-15"
+# name is required for pages deployments
+name = "jocoding-week1"
 
-# [중요] HTML 파일을 배포하기 위한 설정입니다.
-# 위에서 만든 'public' 폴더를 지정합니다.
-[assets]
-directory = "./public"
+# Tells Wrangler that this is a Pages project
+pages_build_output_dir = "."
+
+# Optionally, you can also specify the build command if you have one.
+# For a simple static site, you might not need a build command, or it could be empty.
+# command = "npm run build"
