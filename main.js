@@ -74,6 +74,12 @@ async function predict(imageElement) {
         
         labelContainer.appendChild(resultItem);
     }
+
+    // Show the ad unit now that content is available
+    const adUnit = document.querySelector('.ad-unit');
+    if (adUnit) {
+        adUnit.style.display = 'block';
+    }
 }
 
 // 초기 로드
