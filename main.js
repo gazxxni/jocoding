@@ -157,6 +157,34 @@ testerTemplate.innerHTML = `
             margin: 1.5rem auto;
             text-align: center;
         }
+        .share-buttons {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .share-buttons h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .share-button-group {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+        }
+        .button-share {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 10px;
+        }
+        .button-twitter { background-color: #1DA1F2; color: white; }
+        .button-facebook { background-color: #1877F2; color: white; }
+        .button-copy { background-color: #777; color: white; }
     </style>
     <div class="card">
         <div class="card-header">
@@ -168,6 +196,14 @@ testerTemplate.innerHTML = `
                 <span class="placeholder">이미지를 업로드하세요</span>
             </div>
             <div id="label-container"></div>
+            <div class="share-buttons">
+                <h3>결과 공유하기</h3>
+                <div class="share-button-group">
+                    <button id="twitter-share-btn" class="button button-share button-twitter"><i class="fa-brands fa-twitter"></i> 트위터</button>
+                    <button id="facebook-share-btn" class="button button-share button-facebook"><i class="fa-brands fa-facebook"></i> 페이스북</button>
+                    <button id="copy-link-btn" class="button button-share button-copy"><i class="fa-solid fa-copy"></i> 링크 복사</button>
+                </div>
+            </div>
             <ins class="adsbygoogle ad-unit"
                 style="display:block"
                 data-ad-client="ca-pub-3727745903495236"
@@ -193,6 +229,7 @@ class AnimalFaceTester extends HTMLElement {
         this.URL = "https://teachablemachine.withgoogle.com/models/FbPUvPxyt/";
         this.model = null;
         this.maxPredictions = 0;
+        this.resultText = '';
     }
 
     connectedCallback() {
@@ -200,6 +237,7 @@ class AnimalFaceTester extends HTMLElement {
         this.fileInput = this.shadowRoot.getElementById('file-input');
         this.imageContainer = this.shadowRoot.getElementById('image-container');
         this.labelContainer = this.shadowRoot.getElementById('label-container');
+        this.shareButtons = this.shadowRoot.querySelector('.share-buttons');
         
         this.uploadBtn.addEventListener('click', () => this.fileInput.click());
         this.fileInput.addEventListener('change', this.handleFileChange.bind(this));
@@ -229,6 +267,7 @@ class AnimalFaceTester extends HTMLElement {
 
         this.imageContainer.innerHTML = '';
         this.labelContainer.innerHTML = '';
+        this.shareButtons.style.display = 'none';
         
         const img = document.createElement('img');
         const reader = new FileReader();
@@ -244,6 +283,8 @@ class AnimalFaceTester extends HTMLElement {
 
     async predict(imageElement) {
         const prediction = await this.model.predict(imageElement);
+        let resultText = "AI가 제 동물상을 분석해줬어요! 여러분도 한 번 해보세요!\\n\\n";
+        
         prediction.forEach(p => {
             const resultItem = document.createElement('div');
             resultItem.classList.add('result-item');
@@ -260,12 +301,42 @@ class AnimalFaceTester extends HTMLElement {
             resultItem.appendChild(percent);
             
             this.labelContainer.appendChild(resultItem);
+            resultText += `${p.className}: ${(p.probability * 100).toFixed(0)}%\\n`;
         });
+        
+        this.resultText = resultText;
+        this.shareButtons.style.display = 'flex';
+        this.setupShareButtons();
 
         const adUnit = this.shadowRoot.querySelector('.ad-unit');
         if (adUnit) {
             adUnit.style.display = 'block';
         }
+    }
+
+    setupShareButtons() {
+        const url = window.location.href;
+        const text = encodeURIComponent(this.resultText);
+
+        const twitterBtn = this.shadowRoot.getElementById('twitter-share-btn');
+        const facebookBtn = this.shadowRoot.getElementById('facebook-share-btn');
+        const copyBtn = this.shadowRoot.getElementById('copy-link-btn');
+
+        twitterBtn.onclick = () => {
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        };
+
+        facebookBtn.onclick = () => {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        };
+
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(url).then(() => {
+                alert("링크가 복사되었습니다!");
+            }, () => {
+                alert("링크 복사에 실패했습니다.");
+            });
+        };
     }
 }
 
